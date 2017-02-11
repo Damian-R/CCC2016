@@ -1,0 +1,89 @@
+import java.util.Scanner;
+public class CCC2 {
+	public static void main(String[]args){
+		Scanner scan = new Scanner(System.in);
+		int questiontype = scan.nextInt();
+		int citizens = scan.nextInt();
+		int[] dmoj = new int[citizens];
+		int speed = 0;
+		int fast = 0;
+		int[] peg = new int[citizens];
+		for(int i = 0; i < citizens; i++){
+			dmoj[i] = scan.nextInt();
+		}
+		for(int i = 0; i < citizens; i++){
+			peg[i] = scan.nextInt();
+		}
+		
+		if(questiontype == 1){
+			for(int i = 0; i < citizens; i++){
+				int slowd = slowest(dmoj);
+				int slowp = slowest(peg);
+				speed += max(slowp,slowd);
+				for(int j = 0; j < citizens; j++){
+					if(slowd == dmoj[j])
+						dmoj[j] = 1000001;
+					if(slowp == peg[j])
+						peg[j] = 1000001;
+				}
+			}
+		}
+		
+		if(questiontype == 2){
+			for(int i = 0; i < citizens; i++){
+				int slowd = slowest(dmoj);
+				int slowp = slowest(peg);
+				int slow = min(slowp,slowd);
+				if(slow == slowd){
+					fast = fastest(peg);
+					for(int j = 0; j < citizens; j++){
+						if(slow == dmoj[j])
+							dmoj[j] = 1000001;
+						if(fast == peg[j])
+							peg[j] = 1000001;
+					}
+				} else if (slow == slowp){
+					fast = fastest(dmoj);
+					for(int j = 0; j < citizens; j++){
+						if(slow == peg[j])
+							peg[j] = 1000001;
+						if(fast == dmoj[j])
+							dmoj[j] = 1000001;
+					}
+				}
+				speed += fast;
+			}
+		}
+		System.out.println(speed);
+	}
+	
+	public static int fastest(int[] a){
+		int fastest = 0;
+		for(int i = 0; i < a.length; i++)
+			if((a[i] > fastest) && ((a[i] < 1000000) && (a[i] > 0)))
+				fastest = a[i];
+		return fastest;
+	}
+	
+	public static int slowest(int[] a){
+		int slowest = 10000001;
+		for(int i = 0; i < a.length; i++)
+			if(a[i] < slowest && ((a[i] < 1000000) && (a[i] > 0)))
+				slowest = a[i];
+		return slowest;
+	}
+	
+	public static int min(int a, int b){
+		if(b <= a)
+			return b;
+		else
+			return a;
+	}
+	
+	public static int max(int a, int b){
+		if(b >= a)
+			return b;
+		else
+			return a;
+	}
+}
